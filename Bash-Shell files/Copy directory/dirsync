@@ -1,0 +1,67 @@
+
+#!/bin/bash
+
+if [ "$#" -ne 2 ]; then
+    echo "Usage: $0 source_dir destination_dir"
+    exit 1
+fi
+
+source_dir="$1"
+dest_dir="$2"
+
+if [ ! -d "$source_dir" ]; then
+    echo "Source directory '$source_dir' does not exist."
+    exit 1
+fi
+
+if [ ! -d "$dest_dir" ]; then
+    echo "Destination directory doesn't exist."
+    echo "Do you wish to create this directory?"
+    select yn in "Yes" "No"; do
+        case $yn in
+            Yes ) mkdir "$dest_dir"; break;;
+            No ) exit;;
+        esac
+    done
+fi
+
+copy_file() {
+    src_file="$1"
+    dest_file="$2"
+
+    if [ -e "$dest_file" ]; then
+        src_mtime=$(stat -c %Y "$src_file")
+        dest_mtime=$(stat -c %Y "$dest_file")
+
+        if [ "$src_mtime" -gt "$dest_mtime" ]; then
+            cp "$src_file" "$dest_file"
+            echo "Updated: $dest_file"
+        else
+            echo "Skipped (Newer): $dest_file"
+        fi
+    else
+        cp "$src_file" "$dest_file"
+        echo "Copied: $dest_file"
+    fi
+}
+
+recursive_copy() {
+    local src="$1"
+    local dest="$2"
+
+    for item in "$src"/*; do
+        if [ -d "$item" ]; then
+            dir_name=$(basename "$item")
+            recursive_copy "$item" "$dest/$dir_name"
+        elif [ -f "$item" ]; then
+            file_name=$(basename "$item")
+            dest_file="$dest/$file_name"
+            copy_file "$item" "$dest_file"
+        fi
+    done
+}
+
+recursive_copy "$source_dir" "$dest_dir"
+
+echo "Directory sync completed."
+

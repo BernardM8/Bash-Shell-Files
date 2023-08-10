@@ -1,0 +1,2 @@
+The extractQualSummary.sh extracts all the qualification summaries from all my resumes in a specific directory, and ouputs them to an Output.docx.  
+Works on Linux 

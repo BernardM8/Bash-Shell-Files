@@ -1,0 +1,15 @@
+Write a batch script that will take two directory names as parameters.  For example if your script is called 'dirsync' it would be executed by entering the following command in your shell / terminal window:
+
+dirsync ./foo ./bar
+
+Where ./foo and ./bar are directories or folders on your computer.  "./foo" is the 'source' directory and "./bar" is the 'destination' directory in this case.
+
+It must then ensure that all the files and sub-directories that exist in the first directory (in this case ./foo) are copied to the second directory (./bar).  Ensure that the directory structure and paths and ./foo are copied as well. Thus, if ./foo has ./foo/images/khaja.jpg and ./foo/schedule/cs356-fall22.xls you should end up with ./bar/images/khaja.jpg and ./bar/schedule/cs356-fall22.xls.
+
+If the file or folder already exists in the destination you need not overwrite it or copy it again.
+
+For extra credit, make sure that if the file already exists in the destination you do not overwrite it if it is newer than the file in source.  You should overwrite if it is older than the source.
+
+It can be a batch file or a powershell script if you are on a windows machine.  On Linux or Mac it can be a bash or zsh or c shell.
+
+ 
